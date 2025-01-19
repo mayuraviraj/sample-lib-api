@@ -1,14 +1,13 @@
 package main
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 	"net/http"
 )
 
 func getBooks(c *gin.Context) {
-	fmt.Println("getBooks")
-	fmt.Println(sampleBooks)
+	logger.Info("fetching books")
 	c.IndentedJSON(http.StatusOK, sampleBooks)
 }
 
@@ -18,5 +17,6 @@ func postBook(c *gin.Context) {
 		return
 	}
 	sampleBooks = append(sampleBooks, newBook)
+	logger.Info("New book added", zap.String("title", newBook.Title))
 	c.IndentedJSON(http.StatusCreated, newBook)
 }
